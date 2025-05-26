@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,132 +44,114 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.getValue
 
-@OptIn
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlanesScreen(viewModel: PlanesVM = hiltViewModel(), onSuccess: () -> Unit) {
     val cardAc by viewModel.CardAc.collectAsState()
     val indiceAc by viewModel.indiceAc.collectAsState()
 
-    val salmon = Color(red = 102, green = 51, blue = 143, alpha = 255)
-    val plomoOscuro = Color(red = 105, green = 105, blue = 105)
-    val rojoOscuro = Color(red = 190, green = 0, blue = 0)
-    val verde = Color(red = 113, green = 195, blue = 27)
+    val accentPurple = Color(0xFF4E3A87)
+    val grayDark = Color(0xFF696969)
+    val redDark = Color(0xFFB00000)
+    val greenAccent = Color(0xFF71C31B)
 
     val context = LocalContext.current
-    var indiceAnterior = 0
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp, 40.dp, 20.dp, 30.dp),
+            .padding(horizontal = 20.dp, vertical = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         Text(
-            modifier = Modifier
-                .padding(0.dp, 15.dp, 0.dp, 20.dp),
+            modifier = Modifier.padding(vertical = 15.dp),
             text = "Nuestros planes móviles",
-            fontSize = 30.sp,
-            color = salmon,
+            fontSize = 28.sp,
+            color = accentPurple,
             fontWeight = FontWeight.Bold
         )
+
         Text(
             text = "La mejor cobertura, increíbles beneficios y un compromiso con el planeta.",
-            fontSize = 20.sp,
-            color = Color.Gray,
-            fontWeight = FontWeight.Normal,
+            fontSize = 18.sp,
+            color = Color.DarkGray,
             textAlign = TextAlign.Center
         )
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(top = 24.dp)
         ) {
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(18.dp),
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 10.dp),
+                    .padding(horizontal = 10.dp, vertical = 12.dp),
                 border = BorderStroke(2.dp, Color.LightGray),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text= cardAc.titulo,
-                        fontSize = 30.sp,
-                        color = salmon,
-                        fontWeight = FontWeight.Bold
+                        text = cardAc.titulo,
+                        fontSize = 28.sp,
+                        color = accentPurple,
+                        fontWeight = FontWeight.ExtraBold
                     )
 
-                    Spacer(Modifier.height(20.dp))
+                    Spacer(Modifier.height(16.dp))
 
                     Row(verticalAlignment = Alignment.Bottom) {
-                        Text(
-                            text = "Antes ",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray
-                        )
+                        Text("Antes ", color = Color.Gray)
+
                         Text(
                             text = cardAc.costoAn,
                             modifier = Modifier
-                                .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                                .padding(horizontal = 6.dp)
                                 .drawWithContent {
                                     drawContent()
-                                    val y = size.height / 2  // línea en la mitad del texto
                                     drawLine(
-                                        color = rojoOscuro,
-                                        start = Offset(0f, y),
-                                        end = Offset(size.width, y),
-                                        strokeWidth = 6f
+                                        color = redDark,
+                                        start = Offset(0f, size.height / 2),
+                                        end = Offset(size.width, size.height / 2),
+                                        strokeWidth = 4f
                                     )
                                 },
-                            fontSize = 30.sp,
-                            color = plomoOscuro,
-                            fontWeight = FontWeight.Black,
-                            textAlign = TextAlign.Center
+                            fontSize = 26.sp,
+                            color = grayDark,
+                            fontWeight = FontWeight.Bold
                         )
-                        Text(
-                            text = "/mes",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray
-                        )
+
+                        Text("/mes", color = Color.Gray)
                     }
 
                     Row(verticalAlignment = Alignment.Bottom) {
-                        Text(
-                            text = "Antes ",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Black
-                        )
+                        Text("Ahora ", color = Color.Black)
+
                         Text(
                             text = cardAc.costoAc,
-                            modifier = Modifier
-                                .padding(8.dp, 0.dp, 8.dp, 0.dp),
-                            fontSize = 40.sp,
+                            modifier = Modifier.padding(horizontal = 6.dp),
+                            fontSize = 34.sp,
                             color = Color.Black,
-                            fontWeight = FontWeight.Black,
-                            textAlign = TextAlign.Center
+                            fontWeight = FontWeight.ExtraBold
                         )
-                        Text(
-                            text = "/mes",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Black
-                        )
+
+                        Text("/mes", color = Color.Black)
                     }
 
                     Text(
                         text = cardAc.tamano,
-                        fontSize = 25.sp,
-                        color = plomoOscuro,
-                        fontWeight = FontWeight.Black,
-                        textAlign = TextAlign.Center
+                        fontSize = 20.sp,
+                        color = grayDark,
+                        fontWeight = FontWeight.SemiBold
                     )
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(14.dp))
 
                     val caracteristicas = listOf(
                         "Llamadas y SMS ilimitados",
@@ -180,90 +163,79 @@ fun PlanesScreen(viewModel: PlanesVM = hiltViewModel(), onSuccess: () -> Unit) {
 
                     caracteristicas.forEach {
                         Row(
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .padding(horizontal = 10.dp, vertical = 4.dp)
-                                .fillMaxWidth()
+                                .padding(vertical = 3.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                Icons.Default.Check,
-                                contentDescription = null,
-                                tint = Color.Black)
-                            Spacer(Modifier.width(15.dp))
+                            Icon(Icons.Default.Check, contentDescription = null, tint = accentPurple)
+                            Spacer(Modifier.width(10.dp))
                             Text(
                                 text = it,
-                                textAlign = TextAlign.Left,
                                 fontSize = 15.sp,
                                 color = Color.Black,
-                                modifier = Modifier
-                                    .width(150.dp)
+                                fontWeight = FontWeight.Normal
                             )
                         }
                     }
 
-                    Spacer(Modifier.height(15.dp))
+                    Spacer(Modifier.height(18.dp))
 
-                    // Simulación de íconos sociales
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Start
                     ) {
                         repeat(6) {
-                            Icon(Icons.Default.Favorite, contentDescription = "Icono Social", modifier = Modifier.padding(4.dp))
+                            Icon(
+                                Icons.Default.Favorite,
+                                contentDescription = null,
+                                tint = accentPurple,
+                                modifier = Modifier.padding(4.dp)
+                            )
                         }
                     }
 
                     Spacer(Modifier.height(25.dp))
 
                     Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
-                        onClick = {
-                            onSuccess()
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = salmon, contentColor = Color.White)
+                        onClick = onSuccess,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = accentPurple,
+                            contentColor = Color.White
+                        )
                     ) {
-                        Text("Quiero este plan", color = Color.White)
+                        Text("Quiero este plan")
                     }
                 }
             }
 
             FloatingActionButton(
-                onClick = {
-                    viewModel.enviarWhatsApp(context)
-                },
-                containerColor = verde,
+                onClick = { viewModel.enviarWhatsApp(context) },
+                containerColor = greenAccent,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .size(50.dp),
-                shape = CircleShape,
+                    .size(52.dp),
+                shape = CircleShape
             ) {
                 Icon(
-                    modifier = Modifier
-                        .size(35.dp),
                     imageVector = Icons.Default.Call,
                     contentDescription = "WhatsApp",
-                    tint = Color.White
+                    tint = Color.White,
+                    modifier = Modifier.size(30.dp)
                 )
             }
 
             FloatingActionButton(
-                onClick = {
-                    viewModel.onPrevious()
-                },
+                onClick = { viewModel.onPrevious() },
+                containerColor = accentPurple,
                 modifier = Modifier
                     .align(Alignment.CenterStart)
-                    .size(40.dp),
-                containerColor = salmon,
+                    .size(44.dp),
                 shape = CircleShape
             ) {
                 Icon(
-                    modifier = Modifier
-                        .size(35.dp),
                     imageVector = Icons.Default.KeyboardArrowLeft,
                     contentDescription = "Anterior",
                     tint = Color.White
@@ -271,18 +243,14 @@ fun PlanesScreen(viewModel: PlanesVM = hiltViewModel(), onSuccess: () -> Unit) {
             }
 
             FloatingActionButton(
-                onClick = {
-                    viewModel.onNext()
-                },
+                onClick = { viewModel.onNext() },
+                containerColor = accentPurple,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .size(40.dp),
-                containerColor = salmon,
+                    .size(44.dp),
                 shape = CircleShape
             ) {
                 Icon(
-                    modifier = Modifier
-                        .size(35.dp),
                     imageVector = Icons.Default.KeyboardArrowRight,
                     contentDescription = "Siguiente",
                     tint = Color.White
